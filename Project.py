@@ -57,6 +57,7 @@ if product_choice == "c" or product_choice == "C":
         exit() # Exit the program if invalid quantity
     province_code = input("Enter your province: ")
     if province_code != "AB" and province_code != "ab" and province_code != "BC" and province_code != "bc" and province_code != "ON" and province_code != "on" and province_code not in other_provinces:
+        print("Province choice is invalid. Please restart the program and enter a valid province code.")
         exit() # Exit the program if invalid province code
         
     btotal = kg_num * coffee_price_per_kg
@@ -74,6 +75,7 @@ elif product_choice == "t" or product_choice =="T":
         exit() # Exit the program if invalid quantity
     province_code = input("Enter your province: ")
     if province_code != "AB" and province_code != "ab" and province_code != "BC" and province_code != "bc" and province_code != "ON" and province_code != "on" and province_code not in other_provinces:
+        print("Province choice is invalid. Please restart the program and enter a valid province code.")
         exit() # Exit the program if invalid province code
         
     bags = box_num * bags_per_box
