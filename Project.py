@@ -37,7 +37,7 @@ if product_choice == "c" or product_choice == "C":
         print("Invalid quantity: coffee kilograms must be greater than 0")
         exit()
     province_code = input("Enter your province: ")
-    if province_code != "AB" and province_code != "BC" and province_code != "ON" and province_code != "Other":
+    if province_code != "AB" and province_code != "ab" and province_code != "BC" and province_code != "bc" and province_code != "ON" and province_code != "on" and province_code != "Other":
         print("Province choice is invalid")
         exit()
         
@@ -55,7 +55,7 @@ elif product_choice == "t" or product_choice =="T":
         print("Invalid quantity: tea boxes must be greater than 0")
         exit()
     province_code = input("Enter your province: ")
-    if province_code != "AB" and province_code != "BC" and province_code != "ON" and province_code != "Other":
+    if province_code != "AB" and province_code != "ab" and province_code != "BC" and province_code != "bc" and province_code != "ON" and province_code != "on" and province_code != "Other":
         print("Province choice is invalid")
         exit()
         
@@ -68,7 +68,7 @@ elif product_choice == "t" or product_choice =="T":
     product_amount = ("{} boxes".format(box_num))
     
 # Calculate GST based on province
-if province_code == "AB" or province_code == "BC":
+if province_code == "AB" or province_code == "ab" or province_code == "BC" or province_code == "bc":
     gst_rate = gst_ab_bc
 elif province_code == "ON":
     gst_rate = gst_on
