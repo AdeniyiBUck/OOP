@@ -11,8 +11,6 @@ ID#: 000998156
 
 
 Group 6: Assignment: Programming Basics - Flowchart
-
-
 '''
 #Defininging constants
 bags_per_box = 20
