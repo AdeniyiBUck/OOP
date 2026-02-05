@@ -13,31 +13,36 @@ ID#: 000998156
 Group 6: Assignment: Programming Basics - Flowchart
 '''
 #Defininging constants
-bags_per_box = 20
-tea_price_per_bag = 0.45
-coffee_price_per_kg = 18.50
+BAGS_PER_BOX = 20
+TEA_PRICE_PER_BAG = 0.45
+COFFEE_PRICE_PER_KG = 18.50
 
-tea_discount_threshold_boxes = 10
-coffee_discount_theshold_kg = 25
+TEA_DISCOUNT_THRESHOLD_BOXES = 10
+COFFEE_DISCOUNT_THRESHOLD_KG = 25
 
-tea_discount = 0.15
-coffee_discount = 0.10
+TEA_DISCOUNT_RATE = 0.15
+COFFEE_DISCOUNT_RATE = 0.10
  
-gst_ab_bc = 0.05
-gst_on = 0.13
-gst_other = 0.15
+GST_DEFAULT_RATE = 0.15
+
+#Compound GST rates based on province
+GST_AB_BC = ("AB", "BC") # Provinces with 5% GST
+GST_RATE = {
+    "AB": 0.05,
+    "BC": 0.05,
+    "ON": 0.13
+}
+
 
 #Printing Welcome Message and Product Menu
-print("=" * 100)
-print("                           **** Welcome to the Coffee and Tea Wholesale! ****")
-print("=" * 100)
+print("-" * 60)
+print("**** Welcome to Beverage Wholesale Program! ****")
+print("-" * 60)
 
-print("             Please Select Your Product from the Menu Below:")
-print("Press 'C' or 'c' for Coffee Beans or 'T' or 't' for Tea Boxes")
+print("Please select the type of purchase:")
 print("C: Coffee Beans")
 print("T: Tea Boxes")
-
-product_choice = input("Enter your choice: ")
+product_choice = input(">>> ")
 product_name = ("")
 product_amount = ("") # quantity of product purchased
 province_code = ("")    # For province identification for GST calculation
