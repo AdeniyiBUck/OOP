@@ -25,14 +25,23 @@ COFFEE_DISCOUNT_RATE = 0.10
  
 GST_DEFAULT_RATE = 0.15
 
-#Compound GST rates based on province
+# Setting up the dictrionary of compound GST rates based on province
 GST_AB_BC = ("AB", "BC") # Provinces with 5% GST
-GST_RATE = {
+GST_RATES = {
     "AB": 0.05,
     "BC": 0.05,
     "ON": 0.13
 }
 
+# Defining the variables to be used in the program
+product_name = ("")
+product_amount = 0.0 # quantity of product purchased
+province_code = ("")    # For province identification for GST calculation
+before_discount = 0.0 # price before discount. To be calculated based on product and quantity
+discount_price = 0.0 # price after discount
+gst_rate = GST_DEFAULT_RATE # default GST rate, to be updated based on province
+gst_amount = 0.0 # amount of GST to be calculated based on price after discount and GST rate
+final_price = 0.0 # final price to be calculated as price after discount + GST amount
 
 #Printing Welcome Message and Product Menu
 print("-" * 60)
@@ -43,75 +52,87 @@ print("Please select the type of purchase:")
 print("C: Coffee Beans")
 print("T: Tea Boxes")
 product_choice = input(">>> ")
-product_name = ("")
-product_amount = ("") # quantity of product purchased
-province_code = ("")    # For province identification for GST calculation
-btotal = 0.0 # price before discount. To be calculated based on product and quantity
-discount_price = 0.0 # price after discount
 
-other_provinces = ["SK", "MB", "QC", "NB", "NS", "PE", "NL", "YT", "NT", "NU", "OTHER", "sk", "mb", "qc", "nb", "ns", "pe", "nl", "yt", "nt", "nu", "other"]
-# Product Selection and Input
-if product_choice != "c" and product_choice != "C" and product_choice != "t" and product_choice !="T":
-    print("Invalid Input has been entered. Please restart the program and enter a valid product choice.")
+product_choice = product_choice.strip().upper() # convert input if lowercase to uppercase and remove whitespace infront and back of input
+
+if product_choice != "C" and product_choice != "T": # Check if the product choice is valid (C or T)
+    print("Invalid input, you should enter c/C or t/T")
     exit() # Exit the program if invalid product choice
-if product_choice == "c" or product_choice == "C":
-    product_name = "Coffee Beans"
-    kg_num = float(input("Enter desired number of coffee beans in kilograms: "))
+
+#####Coffee Beans are selected as the product
+if product_choice == "C":
+    product_name = ("\tCoffee")
+
+    kg_num = float(input("Enter the number of kilograms (kg) of coffee: "))
     if kg_num <= 0:
-        print("Invalid quantity: coffee kilograms must be greater than 0") 
+        print("Quantity of Coffee should be > 0") 
         exit() # Exit the program if invalid quantity
-    province_code = input("Enter your province: ")
-    if province_code != "AB" and province_code != "ab" and province_code != "BC" and province_code != "bc" and province_code != "ON" and province_code != "on" and province_code not in other_provinces:
-        print("Province choice is invalid. Please restart the program and enter a valid province code.")
-        exit() # Exit the program if invalid province code
-        
-    btotal = kg_num * coffee_price_per_kg
-    if kg_num > coffee_discount_theshold_kg:
-        discount_price = btotal * (1 - coffee_discount)
-    else:
-        discount_price = btotal
-    product_amount = ("{:.2f}kg".format(kg_num))
 
-elif product_choice == "t" or product_choice =="T":
-    product_name = "Tea Boxes"
-    box_num = int(input("Enter desired number of tea boxes: "))
+        # Asking the user for their province code for GST calculation and validating the input
+    province_code = input("Please enter the 2-letter province abbreviation:")
+    province_code = province_code.strip().upper() # convert input if lowercase to uppercase and remove whitespace infront and back of input
+
+
+
+    before_discount = kg_num * COFFEE_PRICE_PER_KG
+    if kg_num > COFFEE_DISCOUNT_THRESHOLD_KG:
+        discount_price = before_discount * (1 - COFFEE_DISCOUNT_RATE)
+    else:
+        discount_price = float(before_discount)
+
+    product_amount = float("{:.2f}".format(kg_num))
+
+    #####Tea Boxes are selected as the product
+
+elif product_choice == "T":
+    product_name = ("\tTea")
+
+    box_num = int(input("Enter the number of boxes of tea: "))
+
     if box_num <= 0:
-        print("Invalid quantity: tea boxes must be greater than 0")
+        print("Number of tea boxes must be > than 0.")
         exit() # Exit the program if invalid quantity
-    province_code = input("Enter your province: ")
-    if province_code != "AB" and province_code != "ab" and province_code != "BC" and province_code != "bc" and province_code != "ON" and province_code != "on" and province_code not in other_provinces:
-        print("Province choice is invalid. Please restart the program and enter a valid province code.")
-        exit() # Exit the program if invalid province code
-        
-    bags = box_num * bags_per_box
-    btotal = bags * tea_price_per_bag
-    if box_num > tea_discount_threshold_boxes:
-        discount_price = btotal * (1 - tea_discount)
-    else:
-        discount_price = btotal
-    product_amount = ("{} boxes".format(box_num))
-    
-# Calculate GST based on province
-if province_code == "AB" or province_code == "ab" or province_code == "BC" or province_code == "bc":
-    gst_rate = gst_ab_bc
-elif province_code == "ON" or province_code == "on":
-    gst_rate = gst_on
-else:
-    gst_rate = gst_other
 
+        # Asking the user for their province code for GST calculation and validating the input
+
+    province_code = input("Please enter the 2-letter province abbreviation:")
+    province_code = province_code.strip().upper() # convert input if lowercase to uppercase and remove whitespace infront and back of input
+        
+    bags = box_num * BAGS_PER_BOX # tea is sold in boxes but the price is per bag, so we need to calculate the total number of bags based on the number of boxes purchased
+    before_discount = bags * TEA_PRICE_PER_BAG
+
+    #Disount is calculated based on the number of boxes bought not the number of bags
+    if box_num > TEA_DISCOUNT_THRESHOLD_BOXES:
+        discount_price = before_discount * (1 - TEA_DISCOUNT_RATE)
+    else:
+        discount_price = float(before_discount)
+    product_amount = float("{:.2f}".format(bags))
+    
+# Calculate GST based on province (checking to see if the province code is in the GST_RATES dictionary, if not use the default GST rate)
+done = False
+while done == False:
+    if province_code in GST_RATES:
+        gst_rate = GST_RATES[province_code]
+        done = True
+    else:
+        gst_rate = GST_DEFAULT_RATE
+        done = True
+
+## Finding the GST amount and the final pricee to be paid by the customer.
 gst_amount = discount_price * gst_rate
 final_price = discount_price + gst_amount
 
-print("\nReceipt:")
-print("=" * 100)
-print( "Product", "Quantity", "Before Disc", "After Disc", "GST", "Total", sep= " " *10)
-print("{:<15} {:>9} {:>18} {:>18} {:>17} {:>15}".format(
+
+print("-" * 130)
+print( "\tProduct", "Qty (Bags/kg)", "Price Before Disc", "Price After Disc", "GST", "Total Price", sep= " " *10)
+print("{:<15} {:>9.2f} {:>25} {:>25} {:>19} {:>17}".format(
     product_name,
     product_amount,
-    "${:,.2f}".format(btotal),
+    "${:,.2f}".format(before_discount),
     "${:,.2f}".format(discount_price),
     "${:,.2f}".format(gst_amount),
-    "${:,.2f}".format(final_price)
+    "${:,.2f}".format(final_price),
+     
 ))
-print("=" * 100)
-print("Thank you for shopping at Coffee and Tea Wholesale!")
+print("-" * 130)
+print("Thanks for your business, Good Bye")
